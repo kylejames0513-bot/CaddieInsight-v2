@@ -1,0 +1,29 @@
+{% extends "layout.html.j2" %}
+{% from "macros.html.j2" import corners %}
+{% block title %}Set up your bag{% endblock %}
+{% block content %}
+<section class="ci-section">
+  <p class="ci-eyebrow">My bag</p>
+  <h1 class="ci-h2">What do you carry?</h1>
+  <p class="ci-section__lead">
+    Tick the clubs in your bag — the standard thirteen are ticked for you.
+    The putter is not on the list because the putter needs no yardage book.
+  </p>
+  <form method="post" action="/bag/setup">
+    <div class="ci-grid ci-grid--2">
+      {% for kind in ['wood', 'hybrid', 'iron', 'wedge'] %}
+      <fieldset class="ci-card ci-clubset">{{ corners() }}
+        <legend>{{ catalogue.KIND_LABELS[kind] }}</legend>
+        {% for spec in catalogue.CATALOGUE if spec.kind == kind %}
+        <label class="ci-clubset__club">
+          <input type="checkbox" name="clubs" value="{{ spec.key }}"{% if spec.key in current %} checked{% endif %}>
+          <span class="ci-mono">{{ spec.key }}</span> {{ spec.label }}
+        </label>
+        {% endfor %}
+      </fieldset>
+      {% endfor %}
+    </div>
+    <button class="ci-btn" type="submit">Save bag</button>
+  </form>
+</section>
+{% endblock %}

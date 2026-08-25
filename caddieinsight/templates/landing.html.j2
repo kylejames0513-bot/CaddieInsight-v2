@@ -1,0 +1,102 @@
+{% extends "layout.html.j2" %}
+{% from "macros.html.j2" import corners %}
+{% block title %}Know your carry{% endblock %}
+{% block content %}
+
+<section class="ci-hero ci-field">
+  <div class="ci-hero__inner">
+    <p class="ci-eyebrow">CaddieInsight v2</p>
+    <h1 class="ci-display">Know your carry.<br>Trust the club.</h1>
+    <p class="ci-hero__lead">
+      Not the number on the sole. Not what the fitter said in 2023. The
+      carry you actually produce — measured from shots you hit, graded by
+      how much data stands behind it.
+    </p>
+    <div class="ci-hero__actions">
+      <a class="ci-btn ci-btn--light" href="/signup">Start your bag</a>
+      <a class="ci-hero__alt" href="/login">Sign in</a>
+    </div>
+  </div>
+  <div class="ci-hero__sample" aria-label="Example bag ladder">
+    <p class="ci-hero__sample-title ci-mono">BAG LADDER · SAMPLE</p>
+    <dl class="ci-sample">
+      <div><dt>DR</dt><dd><span class="ci-sample__bar" style="width:100%"></span><span class="ci-mono">243</span></dd></div>
+      <div><dt>3W</dt><dd><span class="ci-sample__bar" style="width:88%"></span><span class="ci-mono">214</span></dd></div>
+      <div><dt>4H</dt><dd><span class="ci-sample__bar" style="width:78%"></span><span class="ci-mono">190</span></dd></div>
+      <div><dt>7I</dt><dd><span class="ci-sample__bar" style="width:63%"></span><span class="ci-mono">152</span></dd></div>
+      <div><dt>PW</dt><dd><span class="ci-sample__bar" style="width:48%"></span><span class="ci-mono">118</span></dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="ci-section">
+  <p class="ci-eyebrow">What it is not</p>
+  <h2 class="ci-h2">The course apps already exist.</h2>
+  <p class="ci-section__lead">
+    GPS rangefinders, live scorecards, handicaps, round-by-round feeds —
+    that product is built, several times over. CaddieInsight does none of
+    it, on purpose. This is what you open <em>before</em> the round: on the
+    range, at a fitting, in the clubhouse.
+  </p>
+  <div class="ci-grid ci-grid--3">
+    <article class="ci-card">{{ corners() }}
+      <h3>No GPS</h3>
+      <p>We never ask where you are. The only distance that matters here is
+      the one your swing produces.</p>
+    </article>
+    <article class="ci-card">{{ corners() }}
+      <h3>No scorecard</h3>
+      <p>Your score is between you and the course. Your carries are between
+      you and your bag.</p>
+    </article>
+    <article class="ci-card">{{ corners() }}
+      <h3>No leaderboard</h3>
+      <p>The Clubhouse compares bags, not scores. Nobody wins a range
+      session.</p>
+    </article>
+  </div>
+</section>
+
+<section class="ci-section">
+  <p class="ci-eyebrow">The product</p>
+  <h2 class="ci-h2">Four instruments, one bag.</h2>
+  <div class="ci-grid ci-grid--2">
+    <article class="ci-card">{{ corners() }}
+      <h3>My bag</h3>
+      <p>Every club with its <strong>trust number</strong>: the windowed
+      median carry, the honest spread around it, and a grade — Dialed,
+      Solid, Forming, or Thin data — earned by evidence, never claimed.</p>
+    </article>
+    <article class="ci-card">{{ corners() }}
+      <h3>Range log</h3>
+      <p>Pick a club, type carries — <span class="ci-mono">148 152 141</span>
+      — done. A full range session takes thirty seconds to record.</p>
+    </article>
+    <article class="ci-card">{{ corners() }}
+      <h3>Gapping</h3>
+      <p>The bag drawn as a ladder. A 30-yard hole between clubs is a layup
+      you did not choose; two clubs four yards apart is a passenger in the
+      bag. Both get flagged.</p>
+    </article>
+    <article class="ci-card">{{ corners() }}
+      <h3>The caddie</h3>
+      <p>Give it 152 to the pin, the slope, the wind. It answers with a
+      club, the plays-like number, and the percentage of your logged shots
+      that actually got there. With no data it says so — it never
+      guesses.</p>
+    </article>
+  </div>
+</section>
+
+<section class="ci-section">
+  <p class="ci-eyebrow">The clubhouse</p>
+  <h2 class="ci-h2">A community built around bags, not rounds.</h2>
+  <p class="ci-section__lead">
+    Publish your bag card. Browse the rack. Tip your cap to the member who
+    finally closed their 100-yard gap. Sharing is opt-in — your numbers
+    stay private until you decide otherwise.
+  </p>
+  <a class="ci-btn" href="/signup">Start your bag</a>
+</section>
+
+{% endblock %}

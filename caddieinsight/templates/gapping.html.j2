@@ -1,0 +1,58 @@
+{% extends "layout.html.j2" %}
+{% from "macros.html.j2" import corners, grade_chip %}
+{% block title %}Gapping{% endblock %}
+{% block content %}
+<section class="ci-section">
+  <p class="ci-eyebrow">Gapping</p>
+  <h1 class="ci-h2">The ladder your bag actually is.</h1>
+  <p class="ci-section__lead">
+    Longest measured club at the top. A rung more than
+    <span class="ci-mono">{{ wide_gap }}</span> yards from the next is a
+    yardage you own no club for; rungs within
+    <span class="ci-mono">{{ overlap }}</span> yards are one club twice.
+  </p>
+
+  {% if report.ladder %}
+  <div class="ci-card ci-ladderboard">{{ corners() }}
+    <ol class="ci-ladder">
+      {% for rung in report.ladder %}
+      <li class="ci-ladder__rung">
+        <span class="ci-ladder__key ci-mono">{{ rung.key }}</span>
+        <span class="ci-ladder__bar" aria-hidden="true">
+          <span class="ci-ladder__fill"
+                style="width: {{ '%.1f'|format(100 * rung.number.carry / max_carry) }}%"></span>
+        </span>
+        <span class="ci-ladder__carry ci-mono ci-signal">{{ rung.number.carry|num }}</span>
+      </li>
+      {% if not loop.last %}
+      {% set gap = report.gaps[loop.index0] %}
+      <li class="ci-ladder__gap ci-ladder__gap--{{ gap.verdict }}" aria-label="Gap of {{ gap.yards|num }} yards">
+        <span class="ci-mono">{{ gap.yards|num }} yd</span>
+        {% if gap.verdict == 'wide' %}<span class="ci-chip ci-chip--flag">Wide gap</span>{% endif %}
+        {% if gap.verdict == 'overlap' %}<span class="ci-chip ci-chip--flag">Overlap</span>{% endif %}
+      </li>
+      {% endif %}
+      {% endfor %}
+    </ol>
+  </div>
+  {% endif %}
+
+  {% if report.insights %}
+  <h2 class="ci-h3">What the ladder says</h2>
+  <ul class="ci-insights">
+    {% for insight in report.insights %}
+    <li class="ci-card">{{ corners() }}{{ insight }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if report.unmeasured %}
+  <h2 class="ci-h3">Not on the ladder yet</h2>
+  <ul class="ci-unmeasured">
+    {% for rung in report.unmeasured %}
+    <li><span class="ci-mono">{{ rung.key }}</span> {{ rung.label }} — {{ grade_chip(rung.number) }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</section>
+{% endblock %}

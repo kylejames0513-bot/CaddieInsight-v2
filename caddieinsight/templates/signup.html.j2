@@ -1,0 +1,22 @@
+{% extends "layout.html.j2" %}
+{% from "macros.html.j2" import corners %}
+{% block title %}Start your bag{% endblock %}
+{% block content %}
+<section class="ci-section ci-section--narrow">
+  <p class="ci-eyebrow">New member</p>
+  <h1 class="ci-h2">Start your bag.</h1>
+  <form class="ci-card ci-form" method="post" action="/signup">{{ corners() }}
+    <label>Name
+      <input name="display_name" required maxlength="60" autocomplete="name">
+    </label>
+    <label>Email
+      <input name="email" type="email" required autocomplete="email">
+    </label>
+    <label>Password <span class="ci-form__hint">8+ characters</span>
+      <input name="password" type="password" required minlength="8" autocomplete="new-password">
+    </label>
+    <button class="ci-btn" type="submit">Create account</button>
+    <p class="ci-form__foot">Already a member? <a href="/login">Sign in</a>.</p>
+  </form>
+</section>
+{% endblock %}

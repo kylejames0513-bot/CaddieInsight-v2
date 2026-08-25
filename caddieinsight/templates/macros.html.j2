@@ -1,0 +1,37 @@
+{# Shared drawing primitives for the INDUSTRY grammar. #}
+
+{% macro corners() -%}
+<span class="ci-corner ci-corner--tl" aria-hidden="true"></span
+><span class="ci-corner ci-corner--tr" aria-hidden="true"></span
+><span class="ci-corner ci-corner--bl" aria-hidden="true"></span
+><span class="ci-corner ci-corner--br" aria-hidden="true"></span>
+{%- endmacro %}
+
+{% macro grade_chip(number) -%}
+  {%- if number.grade -%}
+    <span class="ci-chip ci-chip--grade-{{ number.grade|lower }}"
+          title="{{ number.shots_in_window }} shots in window">
+      {{- number.grade }} · {{ number.grade_label -}}
+    </span>
+    {%- if number.stale %} <span class="ci-chip ci-chip--stale">Stale</span>{% endif -%}
+  {%- else -%}
+    <span class="ci-chip ci-chip--empty">No shots</span>
+  {%- endif -%}
+{%- endmacro %}
+
+{# The bag ladder: one rung per measured club, bar scaled to the longest
+   carry, the number set in mono signal because it is a measured value. #}
+{% macro ladder(rungs, max_carry) -%}
+<ol class="ci-ladder">
+  {% for rung in rungs %}
+  <li class="ci-ladder__rung">
+    <span class="ci-ladder__key ci-mono">{{ rung.key }}</span>
+    <span class="ci-ladder__bar" aria-hidden="true">
+      <span class="ci-ladder__fill"
+            style="width: {{ '%.1f'|format(100 * rung.number.carry / max_carry) }}%"></span>
+    </span>
+    <span class="ci-ladder__carry ci-mono ci-signal">{{ rung.number.carry|num }}</span>
+  </li>
+  {% endfor %}
+</ol>
+{%- endmacro %}

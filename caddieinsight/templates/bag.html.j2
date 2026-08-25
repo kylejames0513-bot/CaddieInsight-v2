@@ -1,0 +1,57 @@
+{% extends "layout.html.j2" %}
+{% from "macros.html.j2" import corners, grade_chip %}
+{% block title %}My bag{% endblock %}
+{% block content %}
+<section class="ci-section">
+  <div class="ci-pagehead">
+    <div>
+      <p class="ci-eyebrow">My bag</p>
+      <h1 class="ci-h2">{{ user.display_name }}'s bag</h1>
+    </div>
+    <div class="ci-pagehead__side">
+      <a class="ci-btn" href="/range">Log shots</a>
+      <a class="ci-pagehead__link" href="/bag/setup">Edit clubs</a>
+    </div>
+  </div>
+
+  <dl class="ci-stats">
+    <div class="ci-stats__stat">
+      <dt>Clubs</dt><dd class="ci-mono">{{ rungs|length }}</dd>
+    </div>
+    <div class="ci-stats__stat">
+      <dt>Measured</dt><dd class="ci-mono">{{ measured_count }}</dd>
+    </div>
+    <div class="ci-stats__stat">
+      <dt>Shots logged</dt><dd class="ci-mono">{{ shot_total }}</dd>
+    </div>
+  </dl>
+
+  {% if measured_count == 0 %}
+  <div class="ci-card ci-callout">{{ corners() }}
+    <h2>No numbers yet — and no fake ones either.</h2>
+    <p>CaddieInsight never shows a carry you have not hit. Log one range
+    session and the bag starts filling itself in.</p>
+    <a class="ci-btn" href="/range">Log your first session</a>
+  </div>
+  {% endif %}
+
+  <ul class="ci-baglist">
+    {% for rung in rungs %}
+    <li class="ci-baglist__row{% if rung.number.carry is none %} is-empty{% endif %}">
+      <span class="ci-baglist__key ci-mono">{{ rung.key }}</span>
+      <span class="ci-baglist__label">{{ rung.label }}</span>
+      <span class="ci-baglist__grade">{{ grade_chip(rung.number) }}</span>
+      {% if rung.number.carry is not none %}
+      <span class="ci-baglist__carry ci-mono ci-signal">{{ rung.number.carry|num }}<em>yd</em></span>
+      <span class="ci-baglist__spread ci-mono">P25 {{ rung.number.p25|num }} – P75 {{ rung.number.p75|num }}</span>
+      <span class="ci-baglist__count">{{ rung.number.shots_in_window }} shots in window</span>
+      {% else %}
+      <span class="ci-baglist__carry ci-mono">—</span>
+      <span class="ci-baglist__spread"><a href="/range">Log carries to earn a number</a></span>
+      <span class="ci-baglist__count"></span>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}
