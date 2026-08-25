@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}CaddieInsight{% endblock %} · CaddieInsight</title>
+  <meta name="description" content="The yardage book for your bag: measured carry distances, gapping analysis, and a caddie you can trust.">
+  {# theme-color is parsed by browser chrome, not the CSSOM — literal only. #}
+  <meta name="theme-color" content="#f2f2f3">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" sizes="32x32" href="/static/brand/caddieinsight-favicon-32.png">
+  <link rel="icon" sizes="16x16" href="/static/brand/caddieinsight-favicon-16.png">
+  <link rel="apple-touch-icon" href="/static/brand/pwa-icon-192.png">
+  <link rel="preload" href="/static/fonts/barlow-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/static/fonts/barlow-latin-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/static/fonts/barlow-condensed-latin-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/static/fonts/dm-mono-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/static/fonts/dm-mono-latin-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<a class="ci-skip" href="#main">Skip to content</a>
+
+<div class="ci-band" role="note">Know your carry · The yardage book for your bag</div>
+
+<header class="ci-header">
+  <a class="ci-header__brand" href="{{ '/bag' if user else '/' }}">
+    <img src="/static/brand/caddieinsight-logo.png" alt="CaddieInsight" height="26">
+  </a>
+  {% if user %}
+  <nav class="ci-header__nav" aria-label="Primary">
+    <a href="/bag" {% if path.startswith('/bag') %}class="is-current" aria-current="page"{% endif %}>My bag</a>
+    <a href="/range" {% if path.startswith('/range') %}class="is-current" aria-current="page"{% endif %}>Range log</a>
+    <a href="/gapping" {% if path.startswith('/gapping') %}class="is-current" aria-current="page"{% endif %}>Gapping</a>
+    <a href="/caddie" {% if path.startswith('/caddie') %}class="is-current" aria-current="page"{% endif %}>Caddie</a>
+    <a href="/clubhouse" {% if path.startswith('/clubhouse') %}class="is-current" aria-current="page"{% endif %}>Clubhouse</a>
+  </nav>
+  <div class="ci-header__side">
+    <a href="/settings" {% if path.startswith('/settings') %}class="is-current" aria-current="page"{% endif %}>{{ user.display_name }}</a>
+    <form method="post" action="/logout">
+      <button class="ci-linkbtn" type="submit">Sign out</button>
+    </form>
+  </div>
+  {% else %}
+  <nav class="ci-header__nav" aria-label="Primary">
+    <a href="/login" {% if path.startswith('/login') %}class="is-current" aria-current="page"{% endif %}>Sign in</a>
+  </nav>
+  <div class="ci-header__side">
+    <a class="ci-btn" href="/signup">Start your bag</a>
+  </div>
+  {% endif %}
+</header>
+
+{% if notice %}
+<div class="ci-notice" role="status">{{ notice }}</div>
+{% endif %}
+
+<main id="main" class="ci-main">
+{% block content %}{% endblock %}
+</main>
+
+<footer class="ci-footer ci-field">
+  <img src="/static/brand/caddieinsight-logo-inverse.png" alt="" height="22">
+  <p class="ci-footer__line">The yardage book for your bag. No GPS, no scorecard, no leaderboard — your numbers.</p>
+  <p class="ci-footer__fine ci-mono">CaddieInsight v{{ version }}</p>
+</footer>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/service-worker.js");
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{% extends "layout.html.j2" %}
+{% from "macros.html.j2" import corners, grade_chip, ladder %}
+{% block title %}{{ member.display_name }}'s bag{% endblock %}
+{% block content %}
+<section class="ci-section">
+  <p class="ci-eyebrow"><a href="/clubhouse/bags">← The bag rack</a></p>
+  <h1 class="ci-h2">{{ member.display_name }}'s bag card</h1>
+  {% if member.home_course %}
+  <p class="ci-section__lead">Plays out of {{ member.home_course }}.</p>
+  {% endif %}
+
+  {% if report.ladder %}
+  <div class="ci-card ci-ladderboard">{{ corners() }}
+    {{ ladder(report.ladder, max_carry) }}
+  </div>
+
+  <h2 class="ci-h3">The numbers</h2>
+  <table class="ci-table">
+    <thead>
+      <tr><th scope="col">Club</th><th scope="col">Carry</th>
+          <th scope="col">Spread</th><th scope="col">Grade</th></tr>
+    </thead>
+    <tbody>
+      {% for rung in report.ladder %}
+      <tr>
+        <td><span class="ci-mono">{{ rung.key }}</span> {{ rung.label }}</td>
+        <td class="ci-mono ci-signal">{{ rung.number.carry|num }}</td>
+        <td class="ci-mono">{{ rung.number.p25|num }}–{{ rung.number.p75|num }}</td>
+        <td>{{ grade_chip(rung.number) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="ci-finehint">No measured carries on this card yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

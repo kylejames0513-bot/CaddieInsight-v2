@@ -1,0 +1,59 @@
+{% extends "layout.html.j2" %}
+{% from "macros.html.j2" import corners %}
+{% block title %}The caddie{% endblock %}
+{% block content %}
+<section class="ci-section">
+  <p class="ci-eyebrow">The caddie</p>
+  <h1 class="ci-h2">How far, and what is it playing through?</h1>
+
+  <form class="ci-card ci-form ci-form--row" method="get" action="/caddie">{{ corners() }}
+    <label>To the pin, yards
+      <input class="ci-mono" name="target" required inputmode="decimal"
+             value="{{ form.target }}" placeholder="152">
+    </label>
+    <label>Elevation, feet <span class="ci-form__hint">uphill +, downhill −</span>
+      <input class="ci-mono" name="elevation" inputmode="decimal" value="{{ form.elevation }}">
+    </label>
+    <label>Wind, mph <span class="ci-form__hint">headwind +, tailwind −</span>
+      <input class="ci-mono" name="wind" inputmode="decimal" value="{{ form.wind }}">
+    </label>
+    <label>Temperature, °F
+      <input class="ci-mono" name="temp" inputmode="decimal" value="{{ form.temp }}">
+    </label>
+    <button class="ci-btn" type="submit">Ask the caddie</button>
+  </form>
+
+  {% if result %}
+  <div class="ci-verdict ci-field">
+    <p class="ci-verdict__eyebrow">Plays like</p>
+    <p class="ci-verdict__plays ci-mono">{{ result.plays.adjusted|num }}<span> yd</span></p>
+    {% if result.plays.delta != 0 %}
+    <p class="ci-verdict__delta ci-mono">{{ result.plays.target|num }} on the sprinkler head,
+      {{ '%+g'|format(result.plays.delta) }} for the conditions</p>
+    {% endif %}
+    {% if result.pick %}
+    <p class="ci-verdict__club ci-display">{{ result.pick.label }}</p>
+    {% if result.reach is not none %}
+    <div class="ci-verdict__reach">
+      <span class="ci-verdict__reachbar" aria-hidden="true"><span style="width: {{ result.reach }}%"></span></span>
+      <span class="ci-mono">{{ result.reach }}%</span> of your logged
+      {{ result.pick.label }}s carried that far
+    </div>
+    {% endif %}
+    {% endif %}
+    <p class="ci-verdict__note">{{ result.note }}</p>
+    {% if result.alternative %}
+    <p class="ci-verdict__alt">More club: {{ result.alternative.label }}
+      carries <span class="ci-mono">{{ result.alternative.number.carry|num }}</span> for you.</p>
+    {% endif %}
+  </div>
+  {% else %}
+  <p class="ci-finehint">
+    The caddie answers from your measured carries only. Slope, wind and
+    temperature use the published rules of thumb — a yard per three uphill
+    feet, a yard per mph of headwind (half back with the wind), two yards
+    per ten degrees of cold.
+  </p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "layout.html.j2" %}
+{% from "macros.html.j2" import corners %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+<section class="ci-section ci-section--narrow">
+  <p class="ci-eyebrow">Settings</p>
+  <h1 class="ci-h2">Your card in the clubhouse.</h1>
+  <form class="ci-card ci-form" method="post" action="/settings">{{ corners() }}
+    <label>Display name
+      <input name="display_name" value="{{ user.display_name }}" maxlength="60" required>
+    </label>
+    <label>Home course <span class="ci-form__hint">optional</span>
+      <input name="home_course" value="{{ user.home_course }}" maxlength="80">
+    </label>
+    <label class="ci-form__check">
+      <input type="checkbox" name="share_bag" {% if user.share_bag %}checked{% endif %}>
+      Share my bag on the rack — members can see my clubs, carries and grades.
+      Off means nobody sees a number of yours, ever.
+    </label>
+    <button class="ci-btn" type="submit">Save</button>
+  </form>
+  <p class="ci-finehint">Signed in as <span class="ci-mono">{{ user.email }}</span>.</p>
+</section>
+{% endblock %}

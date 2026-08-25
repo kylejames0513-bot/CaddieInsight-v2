@@ -1,0 +1,51 @@
+{% extends "layout.html.j2" %}
+{% from "macros.html.j2" import corners %}
+{% block title %}Range log{% endblock %}
+{% block content %}
+<section class="ci-section">
+  <p class="ci-eyebrow">Range log</p>
+  <h1 class="ci-h2">Thirty seconds, then back to hitting balls.</h1>
+
+  <form class="ci-card ci-form ci-form--row" method="post" action="/range">{{ corners() }}
+    <label>Club
+      <select name="club" required>
+        <option value="">Pick a club</option>
+        {% for key in bag_keys %}
+        <option value="{{ key }}">{{ key }} — {{ catalogue.spec_for(key).label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Carries, in yards
+      <input class="ci-mono" name="carries" required placeholder="148 152 141"
+             inputmode="decimal" autocomplete="off">
+    </label>
+    <label>Note <span class="ci-form__hint">optional</span>
+      <input name="note" maxlength="120" placeholder="range balls, into wind">
+    </label>
+    <button class="ci-btn" type="submit">Log shots</button>
+  </form>
+  <p class="ci-finehint">
+    Type every carry from the session, separated by spaces. Carry, not
+    total — the number that clears the bunker is the one worth knowing.
+  </p>
+
+  {% if recent %}
+  <h2 class="ci-h3">Recent shots</h2>
+  <table class="ci-table">
+    <thead>
+      <tr><th scope="col">Club</th><th scope="col">Carry</th><th scope="col">Logged</th><th scope="col">Note</th></tr>
+    </thead>
+    <tbody>
+      {% for shot in recent %}
+      <tr>
+        <td class="ci-mono">{{ shot.club_key }}</td>
+        <td class="ci-mono ci-signal">{{ shot.carry|num }}</td>
+        <td>{{ shot.logged_at|ago }}</td>
+        <td>{{ shot.note }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</section>
+{% endblock %}

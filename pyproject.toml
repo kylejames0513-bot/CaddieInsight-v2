@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "caddieinsight"
+version = "2.0.0"
+description = "CaddieInsight v2 — the yardage book for your bag: measured carry distances, gapping analysis, and a caddie you can argue with."
+requires-python = ">=3.11"
+dependencies = [
+    "jinja2>=3.1",
+]
+
+[project.optional-dependencies]
+web = [
+    "fastapi>=0.110",
+    "uvicorn>=0.27",
+    "python-multipart>=0.0.9",
+]
+test = [
+    "pytest>=8",
+    "httpx>=0.27",
+]
+
+[tool.setuptools.packages.find]
+include = ["caddieinsight*"]
+
+[tool.setuptools.package-data]
+caddieinsight = ["templates/*.j2", "static/*", "static/fonts/*", "static/brand/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

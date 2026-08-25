@@ -1,0 +1,46 @@
+{% extends "layout.html.j2" %}
+{% from "macros.html.j2" import corners %}
+{% block title %}Clubhouse{% endblock %}
+{% block content %}
+<section class="ci-section ci-section--narrow">
+  <p class="ci-eyebrow"><a href="/clubhouse">← The clubhouse</a></p>
+  <article class="ci-card ci-post">{{ corners() }}
+    <p class="ci-post__meta">
+      <strong>{{ post.author }}</strong>
+      <span>{{ post.created_at|ago }}</span>
+      {% if post.author_shares_bag %}
+      <a class="ci-post__bag" href="/clubhouse/bags/{{ post.user_id }}">View bag</a>
+      {% endif %}
+    </p>
+    <p class="ci-post__body">{{ post.body }}</p>
+    <div class="ci-post__actions">
+      <form method="post" action="/clubhouse/p/{{ post.id }}/tap">
+        <button class="ci-linkbtn{% if post.tapped_by_me %} is-tapped{% endif %}" type="submit">
+          Tip of the cap · <span class="ci-mono">{{ post.taps }}</span>
+        </button>
+      </form>
+    </div>
+  </article>
+
+  <h2 class="ci-h3">Comments</h2>
+  {% if not comments %}
+  <p class="ci-finehint">No comments yet.</p>
+  {% endif %}
+  <ul class="ci-comments">
+    {% for comment in comments %}
+    <li class="ci-comments__item">
+      <p class="ci-post__meta"><strong>{{ comment.author }}</strong>
+        <span>{{ comment.created_at|ago }}</span></p>
+      <p>{{ comment.body }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <form class="ci-card ci-form" method="post" action="/clubhouse/p/{{ post.id }}/comment">{{ corners() }}
+    <label>Reply
+      <textarea name="body" rows="2" maxlength="500" required></textarea>
+    </label>
+    <button class="ci-btn" type="submit">Comment</button>
+  </form>
+</section>
+{% endblock %}
